@@ -104,13 +104,27 @@ fun WatchFace() {
 
         Box(
             modifier = Modifier
+                .align(Alignment.CenterEnd)
+                .padding(end = 24.dp)
+                .background(Color.DarkGray, shape = RoundedCornerShape(8.dp))
+                .padding(horizontal = 8.dp, vertical = 4.dp)
+        ) {
+            Text(
+                text = date.format(dateFormatter),
+                color = Color.White,
+                fontSize = 12.sp
+            )
+        }
+
+        Box(
+            modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 36.dp)
                 .background(Color.DarkGray, shape = RoundedCornerShape(8.dp))
                 .padding(horizontal = 8.dp, vertical = 4.dp)
         ) {
             Text(
-                text = "${date.format(dateFormatter)} $moonPhase",
+                text = moonPhase,
                 color = Color.White,
                 fontSize = 14.sp
             )
@@ -153,7 +167,7 @@ fun WatchFace() {
             val secondEndX = center.x + (radius * 0.9f) * cos(Math.toRadians(secondAngle.toDouble() - 90)).toFloat()
             val secondEndY = center.y + (radius * 0.9f) * sin(Math.toRadians(secondAngle.toDouble() - 90)).toFloat()
             drawLine(
-                color = Color.Red,
+                color = Color.Blue,
                 start = center,
                 end = Offset(secondEndX, secondEndY),
                 strokeWidth = 2f,
@@ -161,7 +175,7 @@ fun WatchFace() {
             )
 
             // Center dot
-            drawCircle(color = Color.Red, radius = 6f, center = center)
+            drawCircle(color = Color.Blue, radius = 6f, center = center)
         }
     }
 }
