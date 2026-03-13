@@ -98,7 +98,7 @@ fun WatchFace() {
                 for (i in 0 until 12) {
                     val angle = i * 30f
                     // Draw Roman numeral slightly inside the edge
-                    val textRadius = radius * 0.85f
+                    val textRadius = radius * 0.80f
 
                     // Adjust Y position to vertically center the text
                     val textBounds = android.graphics.Rect()
