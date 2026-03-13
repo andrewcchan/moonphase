@@ -21,6 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -82,23 +84,50 @@ fun WatchFace() {
             val center = Offset(size.width / 2, size.height / 2)
             val radius = min(size.width, size.height) / 2
 
-            // Draw ticks
-            for (i in 0 until 60) {
-                val angle = i * 6f
-                val isHour = i % 5 == 0
-                val tickLength = if (isHour) radius * 0.1f else radius * 0.05f
-                val tickStroke = if (isHour) 4f else 2f
-                val startX = center.x + (radius - tickLength) * cos(Math.toRadians(angle.toDouble() - 90)).toFloat()
-                val startY = center.y + (radius - tickLength) * sin(Math.toRadians(angle.toDouble() - 90)).toFloat()
-                val endX = center.x + radius * cos(Math.toRadians(angle.toDouble() - 90)).toFloat()
-                val endY = center.y + radius * sin(Math.toRadians(angle.toDouble() - 90)).toFloat()
+            // Draw ticks and Roman numerals
+            val romanNumerals = listOf("XII", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI")
 
-                drawLine(
-                    color = Color.White,
-                    start = Offset(startX, startY),
-                    end = Offset(endX, endY),
-                    strokeWidth = tickStroke
-                )
+            drawIntoCanvas { canvas ->
+                val paint = android.graphics.Paint().apply {
+                    color = android.graphics.Color.WHITE
+                    textSize = radius * 0.15f
+                    textAlign = android.graphics.Paint.Align.CENTER
+                    isAntiAlias = true
+                }
+
+                for (i in 0 until 12) {
+                    val angle = i * 30f
+                    // Draw Roman numeral slightly inside the edge
+                    val textRadius = radius * 0.85f
+                    val textX = center.x + textRadius * cos(Math.toRadians(angle.toDouble() - 90)).toFloat()
+                    val textY = center.y + textRadius * sin(Math.toRadians(angle.toDouble() - 90)).toFloat()
+
+                    // Adjust Y position to vertically center the text
+                    val textBounds = android.graphics.Rect()
+                    paint.getTextBounds(romanNumerals[i], 0, romanNumerals[i].length, textBounds)
+                    val adjustedY = textY + textBounds.height() / 2f
+
+                    canvas.nativeCanvas.drawText(romanNumerals[i], textX, adjustedY, paint)
+                }
+
+                for (i in 0 until 60) {
+                    if (i % 5 != 0) {
+                        val angle = i * 6f
+                        val tickLength = radius * 0.05f
+                        val tickStroke = 2f
+                        val startX = center.x + (radius - tickLength) * cos(Math.toRadians(angle.toDouble() - 90)).toFloat()
+                        val startY = center.y + (radius - tickLength) * sin(Math.toRadians(angle.toDouble() - 90)).toFloat()
+                        val endX = center.x + radius * cos(Math.toRadians(angle.toDouble() - 90)).toFloat()
+                        val endY = center.y + radius * sin(Math.toRadians(angle.toDouble() - 90)).toFloat()
+
+                        drawLine(
+                            color = Color.White,
+                            start = Offset(startX, startY),
+                            end = Offset(endX, endY),
+                            strokeWidth = tickStroke
+                        )
+                    }
+                }
             }
         }
 
@@ -166,8 +195,9 @@ fun WatchFace() {
             val secondAngle = seconds * 6f
             val secondEndX = center.x + (radius * 0.9f) * cos(Math.toRadians(secondAngle.toDouble() - 90)).toFloat()
             val secondEndY = center.y + (radius * 0.9f) * sin(Math.toRadians(secondAngle.toDouble() - 90)).toFloat()
+            val lightRed = Color(0xFFFF6666)
             drawLine(
-                color = Color.Blue,
+                color = lightRed,
                 start = center,
                 end = Offset(secondEndX, secondEndY),
                 strokeWidth = 2f,
@@ -175,7 +205,7 @@ fun WatchFace() {
             )
 
             // Center dot
-            drawCircle(color = Color.Blue, radius = 6f, center = center)
+            drawCircle(color = lightRed, radius = 6f, center = center)
         }
     }
 }
