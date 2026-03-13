@@ -11,6 +11,13 @@ coreSplashscreen = "1.0.1"
 
 [libraries]
 play-services-wearable = { group = "com.google.android.gms", name = "play-services-wearable", version.ref = "playServicesWearable" }
+wear-watchface = { group = "androidx.wear.watchface", name = "watchface", version = "1.2.1" }
+wear-watchface-complications-data = { group = "androidx.wear.watchface", name = "watchface-complications-data", version = "1.2.1" }
+wear-watchface-complications-data-source-ktx = { group = "androidx.wear.watchface", name = "watchface-complications-data-source-ktx", version = "1.2.1" }
+wear-watchface-complications-rendering = { group = "androidx.wear.watchface", name = "watchface-complications-rendering", version = "1.2.1" }
+wear-watchface-data = { group = "androidx.wear.watchface", name = "watchface-data", version = "1.2.1" }
+wear-watchface-editor = { group = "androidx.wear.watchface", name = "watchface-editor", version = "1.2.1" }
+wear-watchface-style = { group = "androidx.wear.watchface", name = "watchface-style", version = "1.2.1" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 ui = { group = "androidx.compose.ui", name = "ui" }
 ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }

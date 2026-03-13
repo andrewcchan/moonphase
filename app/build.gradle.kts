@@ -57,3 +57,12 @@ dependencies {
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
 }
+dependencies {
+    implementation(libs.wear.watchface)
+    implementation(libs.wear.watchface.complications.data)
+    implementation(libs.wear.watchface.complications.data.source.ktx)
+    implementation(libs.wear.watchface.complications.rendering)
+    implementation(libs.wear.watchface.data)
+    implementation(libs.wear.watchface.editor)
+    implementation(libs.wear.watchface.style)
+}
