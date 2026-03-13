@@ -72,7 +72,9 @@ fun WatchFace() {
         while (true) {
             time = LocalTime.now()
             date = LocalDate.now()
-            delay(1000)
+            // Delay precisely until the start of the next second
+            val delayMillis = 1000L - (System.currentTimeMillis() % 1000L)
+            delay(delayMillis)
         }
     }
 
