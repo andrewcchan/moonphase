@@ -85,7 +85,7 @@ fun WatchFace() {
             val radius = min(size.width, size.height) / 2
 
             // Draw ticks and Roman numerals
-            val romanNumerals = listOf("XII", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI")
+            val romanNumerals = listOf("XII", "I", "II", "", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI")
 
             drawIntoCanvas { canvas ->
                 val paint = android.graphics.Paint().apply {
@@ -98,7 +98,7 @@ fun WatchFace() {
                 for (i in 0 until 12) {
                     val angle = i * 30f
                     // Draw Roman numeral slightly inside the edge
-                    val textRadius = radius * 0.75f
+                    val textRadius = radius * 0.85f
 
                     // Adjust Y position to vertically center the text
                     val textBounds = android.graphics.Rect()
