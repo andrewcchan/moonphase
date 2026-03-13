@@ -98,35 +98,38 @@ fun WatchFace() {
                 for (i in 0 until 12) {
                     val angle = i * 30f
                     // Draw Roman numeral slightly inside the edge
-                    val textRadius = radius * 0.85f
-                    val textX = center.x + textRadius * cos(Math.toRadians(angle.toDouble() - 90)).toFloat()
-                    val textY = center.y + textRadius * sin(Math.toRadians(angle.toDouble() - 90)).toFloat()
+                    val textRadius = radius * 0.75f
 
                     // Adjust Y position to vertically center the text
                     val textBounds = android.graphics.Rect()
                     paint.getTextBounds(romanNumerals[i], 0, romanNumerals[i].length, textBounds)
-                    val adjustedY = textY + textBounds.height() / 2f
 
-                    canvas.nativeCanvas.drawText(romanNumerals[i], textX, adjustedY, paint)
+                    canvas.nativeCanvas.save()
+                    canvas.nativeCanvas.translate(center.x, center.y)
+                    canvas.nativeCanvas.rotate(angle)
+
+                    // We rotate so top is 0 degrees, then move UP by textRadius.
+                    // To draw text centered at that point, we add half height.
+                    canvas.nativeCanvas.drawText(romanNumerals[i], 0f, -textRadius + textBounds.height() / 2f, paint)
+                    canvas.nativeCanvas.restore()
                 }
 
                 for (i in 0 until 60) {
-                    if (i % 5 != 0) {
-                        val angle = i * 6f
-                        val tickLength = radius * 0.05f
-                        val tickStroke = 2f
-                        val startX = center.x + (radius - tickLength) * cos(Math.toRadians(angle.toDouble() - 90)).toFloat()
-                        val startY = center.y + (radius - tickLength) * sin(Math.toRadians(angle.toDouble() - 90)).toFloat()
-                        val endX = center.x + radius * cos(Math.toRadians(angle.toDouble() - 90)).toFloat()
-                        val endY = center.y + radius * sin(Math.toRadians(angle.toDouble() - 90)).toFloat()
+                    val angle = i * 6f
+                    val isHour = i % 5 == 0
+                    val tickLength = if (isHour) radius * 0.1f else radius * 0.05f
+                    val tickStroke = if (isHour) 4f else 2f
+                    val startX = center.x + (radius - tickLength) * cos(Math.toRadians(angle.toDouble() - 90)).toFloat()
+                    val startY = center.y + (radius - tickLength) * sin(Math.toRadians(angle.toDouble() - 90)).toFloat()
+                    val endX = center.x + radius * cos(Math.toRadians(angle.toDouble() - 90)).toFloat()
+                    val endY = center.y + radius * sin(Math.toRadians(angle.toDouble() - 90)).toFloat()
 
-                        drawLine(
-                            color = Color.White,
-                            start = Offset(startX, startY),
-                            end = Offset(endX, endY),
-                            strokeWidth = tickStroke
-                        )
-                    }
+                    drawLine(
+                        color = Color.White,
+                        start = Offset(startX, startY),
+                        end = Offset(endX, endY),
+                        strokeWidth = tickStroke
+                    )
                 }
             }
         }
